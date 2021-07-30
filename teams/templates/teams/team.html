@@ -1,0 +1,66 @@
+{% extends 'teams/main.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teams</title>
+    <script type="text/javascript">
+		var timeout = setTimeout("location.reload(true);",10000);
+		function resetTimeout() {
+			clearTimeout(timeout);
+			timeout = setTimeout("location.reload(true);",600000);
+		}
+	</script>
+</head>
+<body>
+
+{% block content %}
+
+{% for message in messages %}
+	<p align='center' style='background-color: grey;color: #fff;padding: 10px;margin-top: 10px;'>{{message}}</p>
+{% endfor %}
+
+<br>
+<div align='center' style="height:100%;">
+
+    <a href="{% url 'teamCreate' user.username %}">
+        <input type="button" name="teamCreate" value="Create Team">
+    </a>
+
+    <hr style=" border: 1px solid #132c33;border-radius: 2px;width:50%;">
+
+    {% if member.teams.all %}
+
+        {% if pteam_count >= 1 %}
+
+            {% if mteam_count > 1 %}
+
+                {% include 'teams/creteamcard.html' %}
+                <hr style=" border: 1px solid #132c33;border-radius: 2px;width:50%;">
+                {% include 'teams/teamcard.html' %}
+
+            {% else %}
+
+                {% include 'teams/creteamcard.html' %}
+
+            {% endif %}
+            
+        {% else %}
+
+            {% include 'teams/teamcard.html' %}
+            
+        {% endif %}
+        
+    {% else %}
+        <h5>Not a part of a Team yet....?</h5>
+    {% endif %}
+
+    <hr style=" border: 1px solid #132c33;border-radius: 2px;width:50%;">
+
+	{% include 'teams/reqteamcard.html' %}
+
+</div>
+
+{% endblock content %}
+
+</body>
+</html>

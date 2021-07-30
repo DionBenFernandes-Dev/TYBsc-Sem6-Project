@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ team.name }}:ChatRoom</title>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+		var timeout = setTimeout("location.reload(true);",10000);
+		function resetTimeout() {
+			clearTimeout(timeout);
+			timeout = setTimeout("location.reload(true);",30000);
+		}
+	</script>
+	<style>
+		body{
+    			background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+			}
+			.emp-profile{
+			    {% comment %} padding: 3%; {% endcomment %}
+			    margin-top: 3%;
+			    margin-bottom: 3%;
+			    border-radius: 0.5rem;
+			    background: #fff;
+			}
+			.profile-img{
+			    text-align: center;
+			}
+			.profile-img img{
+			    width: 70%;
+			    height: 100%;
+			}
+			.profile-img .file {
+			    position: relative;
+			    overflow: hidden;
+			    margin-top: -20%;
+			    width: 70%;
+			    border: none;
+			    border-radius: 0;
+			    font-size: 15px;
+			    background: #212529b8;
+			}
+			.profile-img .file input {
+			    position: absolute;
+			    opacity: 0;
+			    right: 0;
+			    top: 0;
+			}
+			.profile-head h5{
+			    color: #333;
+			}
+			.profile-head h6{
+			    color: #0062cc;
+			}
+			.profile-edit-btn{
+			    border: none;
+			    border-radius: 1.5rem;
+			    width: 70%;
+			    padding: 2%;
+			    font-weight: 600;
+			    color: #6c757d;
+			    cursor: pointer;
+			}
+			.proile-rating{
+			    font-size: 12px;
+			    color: #818182;
+			    margin-top: 5%;
+			}
+			.proile-rating span{
+			    color: #495057;
+			    font-size: 15px;
+			    font-weight: 600;
+			}
+			.profile-head .nav-tabs{
+			    margin-bottom:5%;
+			}
+			.profile-head .nav-tabs .nav-link{
+			    font-weight:600;
+			    border: none;
+			}
+			.profile-head .nav-tabs .nav-link.active{
+			    border: none;
+			    border-bottom:2px solid #0062cc;
+			}
+			.profile-work{
+			    padding: 14%;
+			    margin-top: -15%;
+			}
+			.profile-work p{
+			    font-size: 12px;
+			    color: #818182;
+			    font-weight: 600;
+			    margin-top: 10%;
+			}
+			.profile-work a{
+			    text-decoration: none;
+			    color: #495057;
+			    font-weight: 600;
+			    font-size: 14px;
+			}
+			.profile-work ul{
+			    list-style: none;
+			}
+			.profile-tab label{
+			    font-weight: 600;
+			}
+			.profile-tab p{
+			    font-weight: 600;
+			    color: #0062cc;
+			}
+            #id_member_message {
+                width: 500px;
+                height: 50px;
+            }
+	</style>
+</head>
+<body>
+{% include 'teams/navbar.html' %}
+<div class="container emp-profile">
+
+<table class="table table-bordered table-dark">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 15%">User:{{ member.user_name }}</th>
+      <th scope="col" style="text-align: center">{{ chatroom }}</th>
+      <th scope="col" style="width: 15%">Member-List</th>
+    </tr>
+  </thead>
+  <tbody style="height: 450px;">
+    <tr style="height: 90%;">
+      <th scope="row">Coming Soon</th>
+      <td>
+        {% for chat in display_chat_messages reversed %}
+            {{ chat.member_username}}: {{chat.member_message }}<br>
+        {% endfor %}
+      </td>
+      <td>
+        {% for member_name in member_list %}
+            <a href="{% url 'profileMember' pk_user=user.username pk_member=member_name %}"><strong>{{ member_name }}</strong></a> 
+			{% if user.username == team.owner %}
+				<small>
+				{% if member_name.user_name == team.owner %}
+					<a style='color:orange;' href="{% url 'leaveTeam' pk_user=member.user_name pk_team=team.name %}" class="card-link">Leave</a> 
+				{% else %}
+					<a style='color:red;' href="{% url 'removeMember' pk_user=team.owner pk_team=team.name pk_member=member_name %}">Remove</a>
+				{% endif %}
+				</small>
+			{% endif %}<br>
+        {% endfor %}
+      </td>
+    </tr>
+    <tr style="height: 10%%;">
+      <th scope="row"></th>
+      <td>
+        <form class="form-inline" method="POST">
+        {% csrf_token %}
+            <div class="form-group mx-sm-3 mb-2">
+                <div class="form-control" onmouseenter="resetTimeout()">
+                    {{ form.member_message }}
+                </div> 
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Send Message</button>
+        </form>
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+				
+</div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{% extends 'teams/main.html' %}
+{% comment %} <form class="add_your_class" method="GET" action="" >
+    <input class="add_your_class" type="search" name="search"> 
+    <button class="add_your_class" type="submit"> Search </button>
+</form>
+
+{% for result in all_search_results %}
+   {{ result }}
+{% empty %}
+   add something to show no results
+{% endfor %} {% endcomment %}
+{% block content %}
+    <div align='center'>
+    <div style="text-align: center;">
+    <form method="GET" action="">
+        <div class="form-group">
+            <input type="text" class="form-control" id="search" placeholder="Search..." name="search">
+        </div>
+        
+    </form>
+    </div>
+
+    {% if member_list %}
+
+    <h5>Member List:</h5>
+    <table style='margin: 0px 30px 0px'>
+    {% for member in member_list %}
+
+        <td>
+            <div class="card" style="width: 18rem;margin: 10px 5px 0px;">
+            <div class="card-body">
+                <h5 class="card-title"><a href="{% url 'profileMember' pk_user=user.username pk_member=member.user_name %}">{{member.user_name}}</a></h5>
+                <p class="card-text">
+                    {% for skill in member.skills.all %}
+                        {{skill.name}}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </p>
+                {% comment %} <a href="{% url 'teamChatRoom' pk_user=member.user_name pk_team=t.name %}" class="card-link">Add</a> {% endcomment %}
+            </div>
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+
+        {% if forloop.counter|divisibleby:4 %}
+            <tr></tr>
+        {% endif %}
+
+    {% endfor %}
+    </table>
+    {% elif word != None %}
+        <h5>Member(s) with Username : {{ word }} NOT FOUND</h5>
+    {% endif %}
+
+    <hr style=" border: 1px solid #132c33;border-radius: 2px;width:50%;">
+
+    {% if team_list %}
+
+    <h5>Team List:</h5>
+    <table style='margin: 0px 30px 0px'>
+    {% for team in team_list %}
+
+        <td>
+            <div class="card" style="width: 18rem;margin: 10px 5px 0px;">
+            <div class="card-body">
+                <h5 class="card-title">{{team.name}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{team.owner}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Member:{{team.member_set.count}}</h6>
+                <p class="card-text">
+                    {% for skill in team.skill.all %}
+                        {{skill.name}}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </p>
+                {% for member in team.member_set.all %}
+                    {% if user.username == member.user_name %}
+                        {% if user.username == team.owner %}
+                            <a href="{% url 'teamChatRoom' pk_user=user.username pk_team=team.name %}" class="card-link">Open</a>
+                            <a style='color:red;' href="{% url 'deleteTeam' pk_user=user.username pk_team=team.name %}" class="card-link">Delete</a>
+                        {% else %}
+                            <a href="{% url 'teamChatRoom' pk_user=user.username pk_team=team.name %}" class="card-link">Open</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if member_user not in team.member_set.all %}
+                    <a style='color:green;' href="{% url 'joinTeam' pk_user=user.username pk_team=team.name %}" class="card-link">Join</a>
+                {% endif %}
+            </div>
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+
+        {% if forloop.counter|divisibleby:4 %}
+            <tr></tr>
+        {% endif %}
+
+    {% endfor %}
+    </table>
+    {% elif word != None %}
+        <h5>Team(s) with Name : {{ word }} NOT FOUND</h5>
+    {% endif %}
+    </div>
+{% endblock %}

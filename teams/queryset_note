@@ -1,0 +1,82 @@
+{% comment %} {% for t in member.teams.all %}
+	{{t}}
+	{% for s in t.skill.all %}
+		{{s}}
+	{% endfor %}
+{% endfor %} {% endcomment %}
+
+<!-- {% for t in teams %}
+	{% if t.name != 'None' %}
+		{{ t.member_set.user_name }}
+	{% endif %}
+{% endfor %} -->
+
+<!-- {% for m in members %}
+		{{ m.first_name }}
+		{% for s in m.skills.all %}
+			{{ s.name }}
+		{% endfor %}
+		<br>
+{% endfor %}
+
+{% for t in rt %}
+	{{ t.name }}
+	{{ t.skill.all }}
+{% endfor %}
+
+
+<!-- {% for t in teams %}
+	{% if t.name != 'None' %}
+		{{ t.member_set.user_name }}
+	{% endif %}
+{% endfor %} -->
+
+
+<!-- {% for m in members %}
+		{{ m.first_name }}
+		{% for s in m.skills.all %}
+			{{ s.name }}
+		{% endfor %}
+		<br>
+{% endfor %}
+ -->
+
+ {% comment %} 
+<body>
+	
+	{% block content %}
+
+	{% for message in messages %}
+		<p align='center' style='background-color: grey;color: #fff;padding: 10px;margin-top: 10px;'>{{message}}</p>
+	{% endfor %}
+
+	<div align="center" >
+	<br>
+		<h4>{{member.user_name}}</h4>
+		<h4>Update Your Details: </h4>
+		<form method="POST" style="background-color:white;width:25%">
+			{% csrf_token %}
+			{{ form.first_name }}
+			<br><br>
+			{{ form.middle_name }}
+			<br><br>
+			{{ form.last_name }}
+			<br><br>
+			{{ form.email }}
+			<br><br>
+			{{ form.skills }}
+			<h6>Note: Use Ctrl to select more then one</h6>
+			{% if member.first_name != 'First Name' %}
+				<br>
+					<a href="{% url 'skillCreate' user.username %}">
+						<input type="button" name="skill" value="Add Skill">
+					</a>
+				<br>
+			{% endif %}
+			<br>
+			<a href="{% url 'profile' user.username %}">
+				<input type="submit" name="Submit" value="Save Changes">
+			</a>
+			<br>
+		</form>
+	</div> {% endcomment %}

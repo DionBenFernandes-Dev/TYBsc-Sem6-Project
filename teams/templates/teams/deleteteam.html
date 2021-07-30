@@ -1,0 +1,11 @@
+
+<h1>
+<div align="center">
+		<form method="POST">
+            {% csrf_token %}
+            <p style='color:red;'>Are you sure you want to DELETE TEAM "{{team.name}}" ?</p>
+			<input type="submit" name="Submit" value="Delete {{team.name}}">
+            <a href="{% url 'team' member.user_name %}"><input type="button" value="Cancel"></a>
+		</form>
+</div>
+</h1>

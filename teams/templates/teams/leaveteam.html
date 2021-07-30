@@ -1,0 +1,11 @@
+
+<h1>
+<div align="center">
+		<form method="POST">
+            {% csrf_token %}
+            <p style='color:orange;'>Are you sure you want to LEAVE TEAM "{{team.name}}" ?</p>
+			<input type="submit" name="Submit" value="Leave {{team.name}}">
+            <a href="{% url 'home' member.user_name %}"><input type="button" value="Cancel"></a>
+		</form>
+</div>
+</h1>
